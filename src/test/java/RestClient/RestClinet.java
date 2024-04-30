@@ -4,6 +4,8 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import xmlFile.GeneralXml;
+import xmlFile.xmlNode.Configuration;
 
 public class RestClinet {
 
@@ -13,9 +15,11 @@ public class RestClinet {
 
     private RequestSpecification prepareClient(RequestSpecification requestSpecification)
     {
-        requestSpecification.baseUri("https://demoqa.com/");
+
+        Configuration configuration = GeneralXml.createConfig(Configuration.class);
+        requestSpecification.baseUri(configuration.backEndConfig.baseURL);
         //requestSpecification.contentType("application/json");
-        requestSpecification.contentType(ContentType.JSON);
+        requestSpecification.contentType(configuration.backEndConfig.contentType);
 
         return requestSpecification;
     }

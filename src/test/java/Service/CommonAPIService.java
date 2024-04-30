@@ -19,12 +19,27 @@ public class CommonAPIService {
         return response;
     }
 
+    public Response post(Object body, String token, String endpoint)
+    {
+        RequestSpecification requestSpecification = RestAssured.given();
+        //pentru tipul asta de post facem un post cu un body
+        requestSpecification.header("Authorization", "Bearer " + token);
+        requestSpecification.body(body);
+        ServiceHelper.requestLogs(requestSpecification, endpoint, RequestType.REQUEST_POST);
+
+        Response response = performRequest(RequestType.REQUEST_POST, requestSpecification, endpoint);
+        ServiceHelper.responseLogs(response);
+        return response;
+    }
+
     public Response get(String token, String endpoint)
     {
         RequestSpecification requestSpecification = RestAssured.given();
         requestSpecification.header("Authorization", "Bearer " + token);
-        Response response = performRequest(RequestType.REQUEST_GET, requestSpecification, endpoint);
+        ServiceHelper.requestLogs(requestSpecification, endpoint, RequestType.REQUEST_GET);
 
+        Response response = performRequest(RequestType.REQUEST_GET, requestSpecification, endpoint);
+        ServiceHelper.responseLogs(response);
         return response;
     }
 
@@ -32,8 +47,36 @@ public class CommonAPIService {
     {
         RequestSpecification requestSpecification = RestAssured.given();
         requestSpecification.header("Authorization", "Bearer " + token);
-        Response response = performRequest(RequestType.REQUEST_DELETE, requestSpecification, endpoint);
+        ServiceHelper.requestLogs(requestSpecification, endpoint, RequestType.REQUEST_DELETE);
 
+        Response response = performRequest(RequestType.REQUEST_DELETE, requestSpecification, endpoint);
+        ServiceHelper.responseLogs(response);
+        return response;
+    }
+
+    public Response put(Object body, String token, String endpoint)
+    {
+        RequestSpecification requestSpecification = RestAssured.given();
+        //pentru tipul asta de post facem un post cu un body
+        requestSpecification.header("Authorization", "Bearer " + token);
+        requestSpecification.body(body);
+        ServiceHelper.requestLogs(requestSpecification, endpoint, RequestType.REQUEST_PUT);
+
+        Response response = performRequest(RequestType.REQUEST_PUT, requestSpecification, endpoint);
+        ServiceHelper.responseLogs(response);
+        return response;
+    }
+
+    public Response delete(Object body, String token, String endpoint)
+    {
+        RequestSpecification requestSpecification = RestAssured.given();
+        requestSpecification.header("Authorization", "Bearer " + token);
+        requestSpecification.body(body);
+
+        ServiceHelper.requestLogs(requestSpecification, endpoint, RequestType.REQUEST_DELETE);
+
+        Response response = performRequest(RequestType.REQUEST_DELETE, requestSpecification, endpoint);
+        ServiceHelper.responseLogs(response);
         return response;
     }
 

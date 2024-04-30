@@ -1,14 +1,21 @@
 package ObjectData.CollectionOfIsbns;
 
-public class CollectionOfIsbns {
+import ObjectData.ResponseNotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import org.testng.Assert;
+
+import java.io.Serializable;
+
+@AllArgsConstructor
+@Data
+public class CollectionOfIsbns implements ResponseNotNull {
     private String isbn;
 
-    public CollectionOfIsbns(String isbn) {
-        this.isbn = isbn;
-    }
 
-    public String getIsbn() {
-        return isbn;
+    @Override
+    public void validateNotNullFields() {
+        Assert.assertNotNull(isbn);
     }
-
 }

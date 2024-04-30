@@ -2,9 +2,10 @@ package ObjectData.ResponseObject;
 
 import ObjectData.BookObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.util.List;
-
+@Getter
 public class ResponseAccountGetSuccess {
 
     //jsonProperty("userID") -> aici treci exact cum vine response-ul si practic e un fel de alias userID = userid (proprietate java)
@@ -15,16 +16,4 @@ public class ResponseAccountGetSuccess {
     @JsonProperty("books")
     private List<BookObject> books;
 
-
-    public String getUserID() {
-        return userID;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public List<BookObject> getBooks() {
-        return books;
-    }
 }

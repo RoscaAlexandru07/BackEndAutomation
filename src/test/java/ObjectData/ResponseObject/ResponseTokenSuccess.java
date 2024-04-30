@@ -1,8 +1,12 @@
 package ObjectData.ResponseObject;
 
+import ObjectData.ResponseNotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import org.testng.Assert;
 
-public class ResponseTokenSuccess {
+@Getter
+public class ResponseTokenSuccess implements ResponseNotNull {
     @JsonProperty("token")
     public String token;
     @JsonProperty("expires")
@@ -12,19 +16,11 @@ public class ResponseTokenSuccess {
     @JsonProperty("result")
     public String result;
 
-    public String getToken() {
-        return token;
-    }
-
-    public String getExpires() {
-        return expires;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getResult() {
-        return result;
+    @Override
+    public void validateNotNullFields() {
+        Assert.assertNotNull(token);
+        Assert.assertNotNull(expires);
+        Assert.assertNotNull(status);
+        Assert.assertNotNull(result);
     }
 }

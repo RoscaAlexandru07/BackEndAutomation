@@ -9,6 +9,7 @@ import ObjectData.ResponseObject.ResponseAccountSuccess;
 import ObjectData.ResponseObject.ResponseBookStoreBookAdded;
 import ObjectData.ResponseObject.ResponseTokenSuccess;
 import PropertyUtility.PropertyUtility;
+import hooks.Hooks;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -18,9 +19,9 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 
-public class CreateAccountTest {
+public class CreateAccountTest extends Hooks {
 
-    public String userID;
+    public String userId;
     public RequestAccount requestAccountBody;
     public RequestBookStore requestBookStore;
     public String token;
@@ -44,10 +45,12 @@ public class CreateAccountTest {
         /*System.out.println("Step 4: delete specific account");
         deleteSpecificAccount();*/
 
-        /*System.out.println("Step x: get books from specific account");
-        getBooksFromAccount();*/
+
         System.out.println("Step 5: add specific book");
         addSpecificBook();
+
+        System.out.println("Step 3: get specific account");
+        getSpecificAccount();
     }
 
 
@@ -57,7 +60,7 @@ public class CreateAccountTest {
 
         accountActions = new AccountActions();
         ResponseAccountSuccess responseAccountBody = accountActions.createNewAccount(requestAccountBody);
-        userID = responseAccountBody.getUserID();
+        userId = responseAccountBody.getUserID();
     }
 
     public void generateToken(){
@@ -67,22 +70,23 @@ public class CreateAccountTest {
     }
 
     public void getSpecificAccount(){
-        accountActions.checkPresenceAccount(token,userID,requestAccountBody);
+        accountActions.checkPresenceAccount(token,userId,requestAccountBody);
     }
 
     public void deleteSpecificAccount(){
-        accountActions.deleteSpecificAccount(token,userID);
+        accountActions.deleteSpecificAccount(token,userId);
     }
 
     public void addSpecificBook(){
         PropertyUtility propertyUtility = new PropertyUtility("RequestData/bookStoreData");
+
         HashMap<String, String> testData = propertyUtility.getAllData();
-        testData.put("userId", userID);
+        testData.put("userId", userId);
 
         requestBookStore = new RequestBookStore(testData);
 
         bookStoreActions = new BookStoreActions();
-        ResponseBookStoreBookAdded responseBookStoreBookAdded = bookStoreActions.addBook(requestBookStore);
+        ResponseBookStoreBookAdded responseBookStoreBookAdded = bookStoreActions.addBook(requestBookStore, token);
 
     }
 

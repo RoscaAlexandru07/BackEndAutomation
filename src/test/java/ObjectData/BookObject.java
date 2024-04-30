@@ -1,8 +1,11 @@
 package ObjectData;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import org.testng.Assert;
 
-public class BookObject {
+@Getter
+public class BookObject implements ResponseNotNull {
 
     @JsonProperty("isbn")
     private String isbn;
@@ -23,39 +26,20 @@ public class BookObject {
     @JsonProperty("website")
     private String website;
 
-    public String getIsbn() {
-        return isbn;
-    }
+    @Override
+    public void validateNotNullFields() {
+        Assert.assertNotNull(isbn);
+        if(title != null){
+            Assert.assertNotNull(title);
+            Assert.assertNotNull(subTitle);
+            Assert.assertNotNull(author);
+            Assert.assertNotNull(publishDate);
+            Assert.assertNotNull(publisher);
+            Assert.assertNotNull(pages);
+            Assert.assertNotNull(description);
+            Assert.assertNotNull(website);
+        }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getPublishDate() {
-        return publishDate;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public String getPages() {
-        return pages;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getWebsite() {
-        return website;
     }
 }

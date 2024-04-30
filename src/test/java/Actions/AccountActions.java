@@ -26,6 +26,7 @@ public class AccountActions {
 
         //se valideaza resposeBody-ul
         ResponseAccountSuccess responseAccountBody = response.body().as(ResponseAccountSuccess.class);
+        responseAccountBody.validateNotNullFields();
         System.out.println(responseAccountBody.getUserID()); // as String mai face formatari pe langa, specific rest assured. asta e diff intre asta si asi to string
         Assert.assertEquals(responseAccountBody.getUserName(), requestBody.getUserName());
         return responseAccountBody;
@@ -39,6 +40,7 @@ public class AccountActions {
         System.out.println(response.statusLine()); //HTTP/1.1 400 Bad Request
 
         ResponseTokenSuccess responseTokenSuccess = response.body().as(ResponseTokenSuccess.class);
+        responseTokenSuccess.validateNotNullFields();
         System.out.println(responseTokenSuccess.getToken());
         System.out.println(response.getStatusCode());
         Assert.assertEquals(response.getStatusCode(), ResponseStauts.SC_OK);

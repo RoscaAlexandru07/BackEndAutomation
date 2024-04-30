@@ -10,11 +10,11 @@ public class BookstoreServiceImpl implements BookstoreServiceInterface {
     private BookStoreAPIService bookStoreAPIService;
 
     @Override
-    public Response addBooksToAccount(RequestBookStore body) {
+    public Response addBooksToAccount(RequestBookStore body, String token) {
         bookStoreAPIService = new BookStoreAPIService();
 
        // body.setUserID(userID);
-        return bookStoreAPIService.post(body, "BookStore/v1/Books");
+        return bookStoreAPIService.post(body, token, "BookStore/v1/Books");
     }
 
     @Override

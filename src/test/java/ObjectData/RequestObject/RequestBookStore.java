@@ -2,12 +2,13 @@ package ObjectData.RequestObject;
 
 import ObjectData.CollectionOfIsbns.CollectionOfIsbns;
 import ObjectData.RequestPreparation;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
+@Data
 public class RequestBookStore implements RequestPreparation {
 
     private String userId;
@@ -39,7 +40,5 @@ public class RequestBookStore implements RequestPreparation {
         }
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+
 }

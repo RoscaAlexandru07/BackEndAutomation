@@ -3,6 +3,7 @@ package Actions;
 import ObjectData.CollectionOfIsbns.CollectionOfIsbns;
 import ObjectData.RequestObject.RequestAccount;
 import ObjectData.RequestObject.RequestBookStore;
+import ObjectData.ResponseObject.Books;
 import ObjectData.ResponseObject.ResponseAccountSuccess;
 import ObjectData.ResponseObject.ResponseBookStoreBookAdded;
 import ObjectData.ResponseObject.ResponseBooks;
@@ -12,15 +13,17 @@ import Service.ServiceImplementation.BookstoreServiceImpl;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BookStoreActions {
 
     BookstoreServiceImpl bookstoreService;
 
-    public ResponseBookStoreBookAdded addBook(RequestBookStore requestBookStoreBody){
+    public ResponseBookStoreBookAdded addBook(RequestBookStore requestBookStoreBody, String token){
         bookstoreService = new BookstoreServiceImpl();
-        Response response = bookstoreService.addBooksToAccount(requestBookStoreBody);
+        Response response = bookstoreService.addBooksToAccount(requestBookStoreBody, token);
 
         System.out.println(response.statusCode()); //400 exemplu de cum arata raspusul
         System.out.println(response.statusLine()); //HTTP/1.1 400 Bad Request exemplu de cum arata raspunsul
@@ -28,6 +31,9 @@ public class BookStoreActions {
         System.out.println(response.statusLine()); //HTTP/1.1 400 Bad Request exemplu de cum arata raspunsul
 
         ResponseBookStoreBookAdded responseBookStoreBookAdded = response.body().as(ResponseBookStoreBookAdded.class);
+
+        responseBookStoreBookAdded.validateNotNullFields();
+        responseBookStoreBookAdded.validateBook(requestBookStoreBody.getCollectionOfIsbns());
 
         /*System.out.println(Arrays.toString(CollectionOfIsbns.getIsbn())); // as String mai face formatari pe langa, specific rest assured. asta e diff intre asta si asi to string
         Assert.assertEquals(responseBookStoreBookAdded.getIsbn(), requestBookStoreBody.getIsbn());
