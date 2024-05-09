@@ -1,21 +1,14 @@
 package Actions;
 
-import ObjectData.CollectionOfIsbns.CollectionOfIsbns;
-import ObjectData.RequestObject.RequestAccount;
 import ObjectData.RequestObject.RequestBookStore;
-import ObjectData.ResponseObject.Books;
+import ObjectData.RequestObject.RequestAccountBook;
 import ObjectData.ResponseObject.ResponseAccountSuccess;
 import ObjectData.ResponseObject.ResponseBookStoreBookAdded;
 import ObjectData.ResponseObject.ResponseBooks;
 import RestClient.ResponseStauts;
-import Service.ServiceImplementation.AccountServiceImpl;
 import Service.ServiceImplementation.BookstoreServiceImpl;
 import io.restassured.response.Response;
 import org.testng.Assert;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class BookStoreActions {
 
@@ -52,5 +45,24 @@ public class BookStoreActions {
 
         return responseBooks;
 
+    }
+
+    public void updateSpecificBookFromAccount(String token, RequestAccountBook requestBody, String actualBook){
+        Response response = bookstoreService.updateSpecificBook(requestBody, token, actualBook);
+        Assert.assertEquals(response.statusCode(), ResponseStauts.SC_OK);
+
+        ResponseAccountSuccess responseAccountSuccess = response.body().as(ResponseAccountSuccess.class);
+        responseAccountSuccess.validateNotNullFields();
+        responseAccountSuccess.validateBookPresance(requestBody.getIsbn());
+    }
+
+    public void deleteSpecificBookFromAccount(String token, RequestAccountBook requestBody){
+        Response response = bookstoreService.deleteSpecificBook(requestBody, token);
+        Assert.assertEquals(response.statusCode(), ResponseStauts.SC_NOCONTENT);
+    }
+
+    public void deleteBooksFromAccount(String token, String userId){
+        Response response = bookstoreService.deleteBooks(token, userId);
+        Assert.assertEquals(response.statusCode(), ResponseStauts.SC_NOCONTENT);
     }
 }

@@ -1,12 +1,9 @@
 package ObjectData.CollectionOfIsbns;
 
-import ObjectData.ResponseNotNull;
+import ObjectData.ResponseObject.ResponseNotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import org.testng.Assert;
-
-import java.io.Serializable;
 
 @AllArgsConstructor
 @Data

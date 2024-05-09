@@ -1,13 +1,10 @@
 package ObjectData.ResponseObject;
 
-import ObjectData.BookObject;
 import ObjectData.CollectionOfIsbns.CollectionOfIsbns;
-import ObjectData.ResponseNotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.testng.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 @Getter
 public class ResponseBookStoreBookAdded implements ResponseNotNull {

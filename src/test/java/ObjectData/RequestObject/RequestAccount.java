@@ -1,6 +1,5 @@
 package ObjectData.RequestObject;
 
-import ObjectData.RequestPreparation;
 import lombok.Data;
 
 import java.util.HashMap;

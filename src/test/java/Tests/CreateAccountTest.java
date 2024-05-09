@@ -4,17 +4,14 @@ import Actions.AccountActions;
 import Actions.BookStoreActions;
 import ObjectData.RequestObject.RequestAccount;
 import ObjectData.RequestObject.RequestBookStore;
-import ObjectData.ResponseObject.ResponseAccountGetSuccess;
+import ObjectData.RequestObject.RequestAccountBook;
 import ObjectData.ResponseObject.ResponseAccountSuccess;
 import ObjectData.ResponseObject.ResponseBookStoreBookAdded;
 import ObjectData.ResponseObject.ResponseTokenSuccess;
 import PropertyUtility.PropertyUtility;
+import extentUtility.ExtentUtility;
+import extentUtility.ReportStep;
 import hooks.Hooks;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import io.restassured.response.ResponseBody;
-import io.restassured.specification.RequestSpecification;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -28,29 +25,60 @@ public class CreateAccountTest extends Hooks {
 
     public AccountActions accountActions;
     public BookStoreActions bookStoreActions;
+    public RequestAccountBook requestAccountBook;
 
     @Test
     public void CreateAccount(){
         System.out.println("Step1: create new account");
         createAccount();
         System.out.println();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "The user account is created");
 
         System.out.println("Step2: generate new token");
         generateToken();
         System.out.println();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Token was generated");
+
 
         System.out.println("Step 3: get specific account");
         getSpecificAccount();
-
-        /*System.out.println("Step 4: delete specific account");
-        deleteSpecificAccount();*/
-
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Validate the account presence");
 
         System.out.println("Step 5: add specific book");
         addSpecificBook();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "A book was added to specific account");
 
-        System.out.println("Step 3: get specific account");
+        System.out.println("Step 6: get specific account");
         getSpecificAccount();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Validate the account presence");
+
+        System.out.println("Step 7: Update Specific book from account");
+        updateSpecificBook();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "A book was updated with success");
+
+        System.out.println("Step 8: get specific account");
+        getSpecificAccount();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Validate the account presence");
+
+        System.out.println("Step 9: delete specific book");
+        deleteSpecificBook();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "The specific book was deleted successfully");
+
+        System.out.println("Step 10: get after delete of specific book");
+        getSpecificAccount();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "After delete of specific book");
+
+        System.out.println("Step 11: delete all books from account");
+        deleteAccountBooks();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Delete all books from account");
+
+        System.out.println("Step 12: delete account");
+        deleteSpecificAccount();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Delete account");
+
+        System.out.println("Step 13: get updated account");
+        getSpecificAccount();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Get updated account/deleted");
     }
 
 
@@ -94,5 +122,25 @@ public class CreateAccountTest extends Hooks {
         bookStoreActions = new BookStoreActions();
         bookStoreActions.getBooks(token);
 
+    }
+
+    public void updateSpecificBook(){
+        PropertyUtility propertyUtility = new PropertyUtility("RequestData/bookStoreData");
+
+        HashMap<String, String> testData = propertyUtility.getAllData();
+        String expectedBook = testData.get("expectedIsbn");
+        String actualBook = testData.get("actualIsbn");
+        testData.put("userId", userId);
+        testData.put("isbn", expectedBook);
+        requestAccountBook = new RequestAccountBook(testData);
+        bookStoreActions.updateSpecificBookFromAccount(token, requestAccountBook, actualBook);
+    }
+
+    public void deleteSpecificBook(){
+        bookStoreActions.deleteSpecificBookFromAccount(token, requestAccountBook);
+    }
+
+    public void deleteAccountBooks(){
+        bookStoreActions.deleteBooksFromAccount(token, userId);
     }
 }

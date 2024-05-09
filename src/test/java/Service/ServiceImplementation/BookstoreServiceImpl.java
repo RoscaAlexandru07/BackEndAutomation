@@ -1,6 +1,6 @@
 package Service.ServiceImplementation;
 import ObjectData.RequestObject.RequestBookStore;
-import ObjectData.ResponseObject.ResponseAccountSuccess;
+import ObjectData.RequestObject.RequestAccountBook;
 import Service.APIService.BookStoreAPIService;
 import Service.InterfaceService.BookstoreServiceInterface;
 import io.restassured.response.Response;
@@ -13,7 +13,7 @@ public class BookstoreServiceImpl implements BookstoreServiceInterface {
     public Response addBooksToAccount(RequestBookStore body, String token) {
         bookStoreAPIService = new BookStoreAPIService();
 
-       // body.setUserID(userID);
+        // body.setUserID(userID);
         return bookStoreAPIService.post(body, token, "BookStore/v1/Books");
     }
 
@@ -24,18 +24,25 @@ public class BookstoreServiceImpl implements BookstoreServiceInterface {
     }
 
     @Override
-    public Response deleteSpecificBook(RequestBookStore body) {
-        return null;
+    public Response deleteSpecificBook(RequestAccountBook body, String token) {
+        bookStoreAPIService = new BookStoreAPIService();
+        return bookStoreAPIService.delete(body, token, "BookStore/v1/Book");
+
+    }
+
+
+    @Override
+    public Response updateSpecificBook(RequestAccountBook body, String token, String actualBook) {
+        bookStoreAPIService = new BookStoreAPIService();
+        String url = "BookStore/v1/Books/" + actualBook;
+        return bookStoreAPIService.put(body, token, url);
     }
 
     @Override
-    public Response updateSpecificBook(RequestBookStore body) {
-        return null;
-    }
-
-    @Override
-    public Response deleteAccountBooks(RequestBookStore body) {
-        return null;
+    public Response deleteBooks(String token, String userId) {
+        bookStoreAPIService = new BookStoreAPIService();
+        String url = "BookStore/v1/Books?UserId=" + userId;
+        return bookStoreAPIService.delete(token, url);
     }
 
 

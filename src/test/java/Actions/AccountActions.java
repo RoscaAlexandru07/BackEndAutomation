@@ -67,7 +67,7 @@ public class AccountActions {
             System.out.println(response.getStatusLine());
             ResponseAccoutGetFailed responseAccoutGetFailed = response.body().as(ResponseAccoutGetFailed.class);
             Assert.assertEquals(responseAccoutGetFailed.getCode(), "1207");
-            Assert.assertEquals(responseAccoutGetFailed.getMessage(), "User not found");
+            Assert.assertEquals(responseAccoutGetFailed.getMessage(), "User not found!");
         }
 
 
